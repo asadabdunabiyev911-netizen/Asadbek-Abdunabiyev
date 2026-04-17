@@ -1,0 +1,286 @@
+
+<style>
+  .chart-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .chart-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0 0 2px;
+  }
+  .chart-sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: 0 0 14px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal   { background: #E1F5EE; color: #085041; }
+  .badge-amber  { background: #FAEEDA; color: #633806; }
+  .legend-row {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-bottom: 10px; font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-sq   { width: 10px; height: 10px; border-radius: 2px; }
+  .legend-line { width: 20px; height: 3px; border-radius: 2px; }
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 10px; margin-bottom: 16px;
+  }
+  .metric-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px; text-align: center;
+  }
+  .metric-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .metric-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-delta { font-size: 11px; margin-top: 2px; }
+  .delta-up   { color: #0F6E56; }
+  .divider {
+    border: none; border-top: 0.5px solid var(--color-border-tertiary);
+    margin: 1.5rem 0;
+  }
+</style>
+
+<div style="padding: 1rem 0;">
+
+  <!-- KPI cards -->
+  <div class="metric-row">
+    <div class="metric-card">
+      <div class="metric-label">2024 I-chorak jami</div>
+      <div class="metric-value">183</div>
+      <div class="metric-delta" style="color:var(--color-text-tertiary)">mlrd so'm</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">2025 I-chorak jami</div>
+      <div class="metric-value">233</div>
+      <div class="metric-delta delta-up">▲ +27.3%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">2026 I-chorak jami</div>
+      <div class="metric-value">316</div>
+      <div class="metric-delta delta-up">▲ +35.6%</div>
+    </div>
+  </div>
+
+  <!-- Chart 1: Waterfall -->
+  <div class="chart-card">
+    <span class="badge badge-purple">Variant 1 — Waterfall</span>
+    <p class="chart-title">Jami tushum o'sish dinamikasi</p>
+    <p class="chart-sub">Har bir davr o'rtasidagi o'sish miqdori aniq ko'rsatilgan</p>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-sq" style="background:#185FA5"></div>Boshlang'ich</div>
+      <div class="legend-item"><div class="legend-sq" style="background:#1D9E75"></div>O'sish</div>
+      <div class="legend-item"><div class="legend-sq" style="background:#534AB7"></div>Yakuniy</div>
+    </div>
+    <div style="position:relative; width:100%; height:240px;">
+      <canvas id="waterfall" role="img" aria-label="Waterfall chart pul tushumlari 2024-2026. 2024: 183, o'sish +50, 2025: 233, o'sish +83, 2026: 316.">Waterfall chart</canvas>
+    </div>
+  </div>
+
+  <!-- Chart 2: Combo bar+line -->
+  <div class="chart-card">
+    <span class="badge badge-teal">Variant 2 — Kombinatsiya (Bar + Trend chiziq)</span>
+    <p class="chart-title">Tushum tarkibi va umumiy trend</p>
+    <p class="chart-sub">Naqd va terminal to'lovlar hamda jami tushum trendi</p>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-sq" style="background:#378ADD"></div>Naqd shaklda</div>
+      <div class="legend-item"><div class="legend-sq" style="background:#1D9E75"></div>Terminallar orqali</div>
+      <div class="legend-item"><div class="legend-line" style="background:#BA7517"></div>Jami tushum</div>
+    </div>
+    <div style="position:relative; width:100%; height:260px;">
+      <canvas id="combo" role="img" aria-label="Kombinatsiya grafigi: naqd 109 132 166, terminal 74 101 150, jami 183 233 316.">Kombinatsiya grafigi</canvas>
+    </div>
+  </div>
+
+  <!-- Chart 3: 100% stacked + donut -->
+  <div class="chart-card">
+    <span class="badge badge-amber">Variant 3 — Tarkib ulushi (100% Stacked + Donut)</span>
+    <p class="chart-title">Naqd va terminal ulushlarining o'zgarishi</p>
+    <p class="chart-sub">Terminallar ulushi yildan-yilga o'sib bormoqda</p>
+    <div style="display:grid; grid-template-columns: 3fr 2fr; gap: 16px; align-items:center;">
+      <div>
+        <div class="legend-row">
+          <div class="legend-item"><div class="legend-sq" style="background:#378ADD"></div>Naqd</div>
+          <div class="legend-item"><div class="legend-sq" style="background:#1D9E75"></div>Terminal</div>
+        </div>
+        <div style="position:relative; width:100%; height:200px;">
+          <canvas id="stacked" role="img" aria-label="100 foiz stacked bar: 2024 naqd 60% terminal 40%, 2025 naqd 57% terminal 43%, 2026 naqd 53% terminal 47%.">100% stacked</canvas>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <p style="font-size:11px; color:var(--color-text-secondary); margin:0 0 6px;">2026 I-chorak ulushi</p>
+        <div style="position:relative; width:100%; height:160px;">
+          <canvas id="donut" role="img" aria-label="Donut chart 2026: naqd 53%, terminal 47%.">Donut</canvas>
+        </div>
+        <p style="font-size:11px; color:var(--color-text-secondary); margin:6px 0 0;">Naqd <b style="color:#378ADD">53%</b> · Terminal <b style="color:#1D9E75">47%</b></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const naqd = [109, 132, 166];
+const term = [74, 101, 150];
+const jami = [183, 233, 316];
+const qs   = ['2024 I-ch', '2025 I-ch', '2026 I-ch'];
+
+// ---- WATERFALL ----
+new Chart(document.getElementById('waterfall'), {
+  type: 'bar',
+  data: {
+    labels: ['2024 I-ch', '+50 o\'sish', '2025 I-ch', '+83 o\'sish', '2026 I-ch'],
+    datasets: [
+      {
+        label: 'Asos',
+        data: [0, 183, 0, 233, 0],
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderColor: 'rgba(0,0,0,0)',
+        stack: 'w'
+      },
+      {
+        label: 'Qiymat',
+        data: [183, 50, 233, 83, 316],
+        backgroundColor: ['#185FA5','#1D9E75','#534AB7','#1D9E75','#534AB7'],
+        borderRadius: 4,
+        stack: 'w'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        filter: i => i.datasetIndex === 1,
+        callbacks: { label: c => c.raw + ' mlrd' }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true, grid: { display: false },
+        ticks: { font: { size: 11 }, color: '#888780', autoSkip: false }
+      },
+      y: {
+        stacked: true,
+        min: 0, max: 400,
+        grid: { color: 'rgba(136,135,128,0.15)' },
+        ticks: { font: { size: 11 }, color: '#888780', callback: v => v + ' M' }
+      }
+    }
+  }
+});
+
+// ---- COMBO ----
+new Chart(document.getElementById('combo'), {
+  data: {
+    labels: qs,
+    datasets: [
+      {
+        type: 'bar', label: 'Naqd shaklda',
+        data: naqd, backgroundColor: '#378ADD',
+        borderRadius: 4, stack: 's', order: 2
+      },
+      {
+        type: 'bar', label: 'Terminallar orqali',
+        data: term, backgroundColor: '#1D9E75',
+        borderRadius: 4, stack: 's', order: 2
+      },
+      {
+        type: 'line', label: 'Jami tushum',
+        data: jami,
+        borderColor: '#BA7517', backgroundColor: 'rgba(186,117,23,0.1)',
+        borderWidth: 2.5, pointBackgroundColor: '#BA7517',
+        pointRadius: 6, pointHoverRadius: 8,
+        fill: false, tension: 0.3, order: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + ' mlrd' } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#888780' } },
+      y: {
+        min: 0, max: 400,
+        grid: { color: 'rgba(136,135,128,0.15)' },
+        ticks: { font: { size: 11 }, color: '#888780', callback: v => v + ' M' }
+      }
+    }
+  }
+});
+
+// ---- 100% STACKED ----
+const naqdPct = naqd.map((n,i) => Math.round(n/jami[i]*100));
+const termPct = term.map((t,i) => Math.round(t/jami[i]*100));
+
+new Chart(document.getElementById('stacked'), {
+  type: 'bar',
+  data: {
+    labels: qs,
+    datasets: [
+      { label: 'Naqd', data: naqdPct, backgroundColor: '#378ADD', borderRadius: 0, stack: 's' },
+      { label: 'Terminal', data: termPct, backgroundColor: '#1D9E75', borderRadius: 4, stack: 's' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + '%' } },
+      datalabels: false
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 }, color: '#888780' } },
+      y: {
+        stacked: true, min: 0, max: 100,
+        grid: { color: 'rgba(136,135,128,0.15)' },
+        ticks: { font: { size: 11 }, color: '#888780', callback: v => v + '%' }
+      }
+    }
+  }
+});
+
+// ---- DONUT ----
+new Chart(document.getElementById('donut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Naqd', 'Terminal'],
+    datasets: [{
+      data: [53, 47],
+      backgroundColor: ['#378ADD','#1D9E75'],
+      borderWidth: 3,
+      borderColor: 'rgba(255,255,255,0.9)',
+      hoverOffset: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => c.label + ': ' + c.raw + '%' } }
+    }
+  }
+});
+</script>
